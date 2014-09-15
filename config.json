@@ -1,0 +1,10 @@
+{
+	"consumer_key" : "",
+	"consumer_secret" : "",
+	"oauth_token" : "",
+	"oauth_secret" : "",
+	"path_file" : "/path/",
+	"blogname" : "<yourtumblr>.tumblr.com",
+	"last_id_file" : <int: id incremental>,
+	"caption" : "caption in post"
+}
