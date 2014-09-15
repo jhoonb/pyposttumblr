@@ -2,7 +2,7 @@
 
 Posts pictures that are in your directory on tumblr informed (need API Tumblr)
 
-## need 
+## Need 
 
 PyTumblr (A Python Tumblr API v2 Client ) -> https://github.com/jhoonb/pytumblr
 
@@ -11,15 +11,8 @@ PyTumblr (A Python Tumblr API v2 Client ) -> https://github.com/jhoonb/pytumblr
 $ sudo python setup.py install
 ```
 
-### Use PyPostTumblr:
+### Use PyPostTumblr and Tutorial.
 
-In config.json insert required information
+See: http://jhoonb.tumblr.com/post/97600066821/tutorial-pyposttumblr
 
-run: 
-``` bash
-$ python pyposttumblr.py
-```
-
-### Example and Tutorial:
-
-jhoonb.tumblr.com
+:)
