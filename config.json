@@ -7,4 +7,5 @@
 	"blogname" : "<yourtumblr>.tumblr.com",
 	"last_id_file" : <int: id incremental>,
 	"caption" : "caption in post"
+	"tags" : ["tag1", "tag3", "tag2"]
 }
