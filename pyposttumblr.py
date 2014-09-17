@@ -15,7 +15,7 @@ class PyPostTumblr(object):
 	"""
 	PyPostTumblr:
 	posts pictures that are in your directory on tumblr informed
-	see config.json ou parameter conf:
+	see model config.json ou parameter conf:
 	{
 	"consumer_key" : "",
 	"consumer_secret" : "",
@@ -24,8 +24,19 @@ class PyPostTumblr(object):
 	"path_file" : "/path/",
 	"blogname" : "<yourtumblr>.tumblr.com",
 	"last_id_file" : <int: id incremental>,
-	"caption" : "caption in post"
+	"caption" : "caption in post",
+	"tags": ["tags1", "tags2"]
 	}
+
+	use:
+	>>> from pyposttumblr import PyPostTumblr
+	>>>
+	>>> p = PyPostTumblr() # PyPostTumblr('your-config.json')
+	>>> ids = p.create_photos() # add in your tumblr photos in dir "path_file"
+	>>> p.delete_posts(ids) # delete posts param: list
+
+	:) simple 
+
 	"""
 
 	def __init__(self, conf=""):
@@ -52,6 +63,8 @@ class PyPostTumblr(object):
 			self._config['oauth_secret'],
 			)
 
+		# load files in dir
+		self._get_files()
 
 	def _get_files(self):
 		"""
@@ -60,51 +73,47 @@ class PyPostTumblr(object):
 		self._listfiles = os.listdir(self._config['path_file'])
 		self._listfiles = [i for i in self._listfiles if i.find(".") != -1]
 
-
-	def _post_photo(self):
+	def create_photos(self):
 		"""
 		Create a photo post or photoset on a blog using
 		methods .create_photo() from object TumblrRestClient
+		Return list with id of post create 
 		"""
 
-		# check list
-		check = []
 		path_file_ok = self._config['path_file']
-		ftags = []
+		id_post = []
+		if self._config['tags'] == []:
+			self._config['tags'] = ["tumblr"]
 
 		for i in self._listfiles:
-			if i not in check:
-				check.append(i)
-				ftags.append(str(self._id))
-				if i.split('.')[1] == 'gif':
-					ftags.append('gif')
-				
-				print("select img: ", i)
-				# api tumblr .create_photo
-				ok = self._client.create_photo(self._config['blogname'],
-					state='published',
-					tags=ftags,
-					data=path_file_ok+i,
-					caption=self._config['caption'])
 
-				print("response: ", ok)
-					
-				# reset
-				ftags = []
-				self._id += 1
+			ftags = []
+			ftags.extend(self._config['tags'])
+			ftags.append(str(self._id))
 
+			if i.split('.')[1] == 'gif':
+				ftags.append('gif')
 
-	def run(self):
+			print("select img: {}".format(i))
+			# api tumblr .create_photo
+			resp = self._client.create_photo(self._config['blogname'],
+				state='published',
+				tags=ftags,
+				data=path_file_ok+i,
+				caption=self._config['caption'])
+
+			print("response: {}".format(resp['id']))
+			id_post.append(resp['id'])
+			self._id += 1
+
+		return id_post
+
+	def delete_posts(self, id_list):
 		"""
-		run actions
+		delete post in <blogname>
+		param: id_list list
 		"""
 
-		self._get_files()
-		self._post_photo()
-
-
-if __name__== '__main__':
-
-	# pypost = PyPostTumblr('other-file-config.json')
-	pypost = PyPostTumblr()
-	pypost.run()
+		for k in id_list:
+			resp = self._client.delete_post(self._config['blogname'], k)
+			print("del id: {}".format(resp['id']))
