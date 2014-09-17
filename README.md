@@ -11,6 +11,20 @@ PyTumblr (A Python Tumblr API v2 Client ) see -> https://github.com/jhoonb/pytum
 
 1) - Configure file config.json
 
+```json
+	{
+	"consumer_key" : "",
+	"consumer_secret" : "",
+	"oauth_token" : "",
+	"oauth_secret" : "",
+	"path_file" : "/path/",
+	"blogname" : "<yourtumblr>.tumblr.com",
+	"last_id_file" : <int: id incremental>,
+	"caption" : "caption in post",
+	"tags": ["tags1", "tags2"]
+	}
+```
+
 2) - upload photos and create posts
 
 ```python
